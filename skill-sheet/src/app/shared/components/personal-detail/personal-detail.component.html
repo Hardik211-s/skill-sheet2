@@ -1,0 +1,247 @@
+<div class="container mt-4 w-75">
+    <h2 class="m-3  fw-bold " style="color:black" *ngIf="!isEditImage">Add Profile Detail </h2>
+    <h2 class="m-3  fw-bold " style="color:black" *ngIf="isEditImage">Edit Profile Detail </h2>
+    <hr />
+</div>
+
+<div class="p-3 mt-3 w-100  ">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 shadow">
+            <div class="card border-0  ">
+
+                <div class="card-body   p- bg-white">
+                    <form [formGroup]="detailForm">
+                        <div class="row border-bottom  rounded-2 mx-auto" *ngIf="isEditImage">
+                            <div class="col-12 col-sm-auto  pb-3">
+                                <div class="mx-auto" style="width: 140px;">
+                                    <div class="d-flex justify-content-center align-items-center rounded"
+                                        style="height: 170px">
+                                        <!-- <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span> -->
+                                    
+                                        <img src={{profileData.photo}} width="140" class="rounded-circle    img-fluid "
+                                            style="width: 150px; height: 150px; "  *ngIf="selectedFile==null"
+                                            height="140px" />
+                                        <img src={{imageUrl}} width="140" class="rounded-circle    img-fluid "
+                                            style="width: 150px; height: 150px; "   *ngIf="selectedFile!=null"
+                                            height="140px" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3 pt-3">
+                                <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                    <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{profileData.fullName}}</h4>
+                                    <p class="mb-0">{{profileData.username}}</p>
+                                    <!-- <div class="text-muted"><small>Last seen 2 hours ago</small></div> -->
+                                    <div class="mt-2">
+                                        <!-- <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-fw fa-camera"></i>
+                                    <span (click)="changePhoto()">Change Photo</span> 
+                                  </button> -->
+                                        <button class="btn btn-outline-success mt-2 fw-semibold"
+                                            (click)="triggerFileInput(fileInput)">Update Photo</button>
+                                        <input #fileInput type="file" formControlName="photo" (change)="onFileSelected($event)" hidden>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class=" bg-white  mt-3 pb-4 rounded-2" >
+                            <div class="mt-4 row  mb-3">
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">First name</label>
+                                        <input type="text"
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-black text-opacity-50 "
+                                            placeholder="Enter first name" formControlName="username" />
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('username') && detailForm.get('username')?.errors?.['minlength']">
+                                            Username should be atleast 3 letter
+                                        </div>
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('username')  && detailForm.get('username')?.errors?.['required'] ">
+                                            Username is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">Last name</label>
+                                        <input type="text"
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            placeholder="Enter last name" formControlName="lastname" />
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('lastname') && detailForm.get('lastname')?.errors?.['required']">
+                                            Lastname is required
+                                        </div>
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('lastname') && detailForm.get('lastname')?.errors?.['minlength']">
+                                            Lastname should be atleast 3 letter
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row  mb-3 ">
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">Country</label>
+                                        <select
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            formControlName='country'>
+
+
+                                            <option value=''>Select your country</option>
+                                            <option *ngFor="let country of countries" [value]="country">{{ country }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="isFieldTouched('country')  && detailForm.get('country')?.invalid ">
+                                        Country is required
+                                    </div>
+
+                                </div>
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">Gender</label>
+                                        <div class="p-1">
+                                            <label
+                                                class="d-inline-block position-relative ps-4 cursor-pointer fs-6 text-secondary">Male
+                                                <input type="radio" checked="checked" name="gender" value="male"
+                                                    formControlName="gender">
+                                                <span class="checkmark "></span>
+                                            </label>
+                                            <label
+                                                class="d-inline-block position-relative ps-4 cursor-pointer fs-6 text-secondary">Female
+                                                <input type="radio" name="gender" value=female formControlName="gender">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('gender')  && detailForm.get('gender')?.invalid ">
+                                            Gender is required
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row  mb-3 ">
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">Date of birth</label>
+                                        <input type="date" date-provide="datepicker" id="mydate" [max]="ageDate" [min]="minDate"
+                                            class="w-1 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            placeholder="Select birthdate date" formControlName="birthdate" />
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('birthdate')  && detailForm.get('birthdate')?.invalid ">
+                                            Birthdate is required
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="">
+                                        <label class="label mb-1 fw-semibold">Joining date</label>
+                                        <input type="date"
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            placeholder="Select joining date" [max]="maxDate"[min]="minDate" formControlName="joiningDate" />
+                                        <div class="text-danger"
+                                            *ngIf="isFieldTouched('joiningDate')  && detailForm.get('joiningDate')?.invalid ">
+                                            Joining date is required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row  mb-3 ">
+                                <div class="col-6">
+                                    <div class="">
+                                        <label for="name" class="form-label mb-1 fw-semibold">Work in japan</label>
+                                        <select
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            formControlName="workJapan">
+                                            <option value="">Yes / No </option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+
+                                        </select>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="isFieldTouched('workJapan')  && detailForm.get('workJapan')?.invalid ">
+                                        Enter yes or no
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="">
+                                        <label for="phoneNo" class="form-label mb-1 fw-semibold">Mobile Number</label>
+                                        <input type="tel"
+                                            class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                            formControlName="phoneNo" id="mobile" placeholder="Enter your mobile number"
+                                            pattern="[0-9]{10}" required>
+                                    </div>
+                                    <div class="text-danger"
+                                        *ngIf="isFieldTouched('phoneNo')  && detailForm.get('phoneNo')?.invalid ">
+                                        Enter mobile number
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="qualification" class="form-label  fw-semibold">Qualification</label>
+                                <select
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                    formControlName="qualification">
+                                    <option value="" selected>Select options </option>
+                                    <option *ngFor="let degree of degrees" [value]="degree">{{ degree }}</option>
+
+                                </select>
+                                <div class="text-danger"
+                                    *ngIf="isFieldTouched('qualification')  && detailForm.get('qualification')?.invalid ">
+                                    Choose qualification options
+                                </div>
+                            </div>
+                            <div class="mb-3" *ngIf="!isEditImage">
+                                <label for="name" class="form-label mb-1 fw-semibold">Profile photo</label>
+                                <input type="file"
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                    placeholder="Upload photo" formControlName="photo"
+                                    (change)="onFileSelected($event)" />
+
+                                <div class="text-danger"
+                                    *ngIf="isFieldTouched('photo')  && detailForm.get('photo')?.invalid ">
+                                    Choose photo from device
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label mb-1 fw-semibold">Profile
+                                    description</label>
+                                <textarea
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                    formControlName="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                <div class="text-danger"
+                                    *ngIf="isFieldTouched('description')  && detailForm.get('description')?.invalid ">
+                                    Give some description about you !
+                                </div>
+                            </div>
+
+
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn text-white fw-bold" [disabled]="detailForm.invalid"
+                                    (click)="onSubmit()" style="background-color:#CC5DE8">Add profile detail</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+<!-- <script>
+    var date = new Date();
+    date.setDate(date.getDate());
+
+    var date = document.getElementById('mydate').datepicker({
+        startDate: date
+    })
+</script> -->

@@ -1,0 +1,109 @@
+
+<div class=" mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0">
+
+                <div class="card-body shadow p-3">
+                    <mat-stepper #stepper class="bg-white">
+                        <mat-step [stepControl]="firstFormGroup" errorMessage="Category is required">
+                            <form [formGroup]="firstFormGroup">
+                                <ng-template matStepLabel>Fill out your skill category </ng-template>
+                                <mat-form-field class="bg-white text-white "
+                                    style="width:300px; background-color: #fff;">
+                                    <mat-label>Select</mat-label>
+                                    <mat-select formControlName="firstCtrl" panelClass="example-panel-Red">
+                                        @for (category of skillCategory; track category) {
+                                        <mat-option [value]="category.categoryId" (click)="OnCategory()"><i
+                                                class="{{category.iconName}}"></i>
+                                            {{category.categoryName}}</mat-option>
+                                        }
+
+                                    </mat-select>
+                                </mat-form-field> 
+
+                                <div>
+                                    <p>Go to a different step to see the error state</p>
+                                    <button mat-button matStepperNext>Next</button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <mat-step [stepControl]="secondFormGroup" errorMessage="Skillcategory is required">
+                            <form [formGroup]="secondFormGroup">
+                                <ng-template matStepLabel (click)="show()">Fill out your skill subcategory</ng-template>
+                                <mat-form-field style="width:300px; background-color: #fff;">
+                                    <mat-label>Address</mat-label>
+                                    <mat-select formControlName="secondCtrl" panelClass="example-panel-Red">
+
+                                        @for (subCategory of skillSubCategory; track subCategory) {
+                                        <mat-option [value]="subCategory.subcategoryId" (click)="OnSubcategory()"><i
+                                                class="{{subCategory.iconName}}"> </i>
+                                            {{subCategory.subcategoryName}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                                <div>
+                                    <p>Go to a different step to see the error state</p>
+                                    <button mat-button matStepperPrevious>Back</button>
+                                    <button mat-button matStepperNext>Next</button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <mat-step [stepControl]="thirdFormGroup" errorMessage="Skill is required">
+                            <form [formGroup]="thirdFormGroup">
+                                <ng-template matStepLabel>Fill out your skill</ng-template>
+                                <mat-form-field style="width:300px; background-color: #fff;" >
+                                    <mat-label>Skill</mat-label>
+                                    <mat-select formControlName="thirdCtrl" panelClass="example-panel-Red" multiple>
+
+                                        @for (skill of skills; track skill) {
+                                        <mat-option [value]="skill.skillId"><i class="{{skill.iconName}}"> </i>
+                                            {{skill.skillName}}</mat-option>
+                                        }
+                                    </mat-select>
+                                </mat-form-field>
+                                <div class="bg-white">
+                                <mat-form-field style="width:300px; background-color:white;" class="custom-mat-form">
+                                    <mat-label>Proficiency</mat-label>
+                                    <mat-select formControlName="proficiency" panelClass="example-panel-Red" >
+
+                                        <mat-option value="Beginner">
+                                            Beginner</mat-option>
+                                        <mat-option value="Intermediate">
+                                            Intermediate</mat-option>
+                                        <mat-option value="Advanced">
+                                            Advanced</mat-option>
+                                        <mat-option value="Expert">
+                                            Expert</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                                <br/>
+
+                                <span class="">Experience</span>
+                                <br/>
+                                <mat-slider min="0" max="20" step="0.5" showTickMarks discrete [displayWith]="formatLabel" style="width:300px">
+                                    <!-- <mat-label>Address</mat-label> -->
+                                    <input matSliderThumb formControlName="experience"  >
+                                  </mat-slider>
+
+                                <div>
+                                    <p>Go to a different step to see the error state</p>
+                                    <button mat-button matStepperPrevious>Back</button>
+                                    <button  mat-button (click)="stepper.reset()">Reset</button>
+                                    <input #fileInput2 (click)="stepper.reset()" hidden/>
+                                    
+                                    <button mat-button (click)="OnSkill(fileInput,fileInput2)" [disabled]="thirdFormGroup.invalid">submit</button>
+                                    <input #fileInput hidden (click)="openSnackBar('Add skill successfully!!!!') " />
+                                </div>
+                            </form>
+
+                        </mat-step>
+
+                    </mat-stepper>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

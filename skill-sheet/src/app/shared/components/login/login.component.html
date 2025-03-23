@@ -1,0 +1,95 @@
+<section class="">
+<app-navbar></app-navbar>
+    <div class="container h-custom  p-lg-3 p-sm-2" style=" margin-top: 150px;" >
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-6 col-lg-6 col-xl-6">
+                <img src="assets/5215677-removebg-preview.png" class="img-fluid" style="max-width: 70%;"alt="Sample image">
+            </div>
+
+            <div class="col-md-8 col-lg-6 col-xl-4 d-flex justify-content-center align-items-center bg-light shadow p-3 mb-5 bg-body rounded  "
+                style=" background-color: #9C47D1; ">
+                <div class="p-4 " style="max-width: 400px; width: 90%;">
+                    <div class="text-center mb-4">
+
+                        <h1 class="h3 fw-bold" >Sign in</h1>
+                        <div>
+
+                        </div>
+                        <p class="">Sign in to access your account</p>
+                    </div>
+                    <form [formGroup]="loginForm">
+                        <div class="mb-3">
+                            <div class="dropdown">
+                                <label for="email" class="form-label " >User role </label>
+                                <br />
+                               
+                                <select
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                    (change)="getRole($event)" formControlName='role'>
+                                    <option value="">Select role </option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="User">User</option>
+
+                                </select>
+                                <div class="text-danger" *ngIf="isFieldTouched('role')  && loginForm.get('role')?.invalid ">
+                                    Role is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="dropdown">
+                                <label for="username" class="form-label ">User Name </label>
+                                <br />
+                              
+                                <select
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black ng-untouched ng-pristine ng-invalid"
+                                    (click)="getUserName($event)" formControlName='username'>
+                         
+                                       
+                                    <option value="" selected>Select name </option>
+                                    <option *ngFor="let user of userNames" class="dropdown-item" [value]="user">
+                                        {{user}}
+                                    </option>
+                                    <!-- }
+                                } -->
+
+
+                                </select> 
+                                <div class="text-danger" *ngIf="isFieldTouched('username')  && loginForm.get('username')?.invalid ">
+                                    Username is required 
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <label for="password" class="form-label ">Password</label>
+                                
+                            </div>
+                            <input type="password" class="form-control" id="password" formControlName='password' for placeholder="*****">
+                            <div class="text-danger" *ngIf="isFieldTouched('password') && loginForm.get('password')?.errors?.['required'] ">
+                                Password is required
+                            </div>
+                            <div class="text-danger" *ngIf="loginForm.get('password')?.hasError('pattern') && loginForm.get('password')?.touched">
+                                Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                                  </div>
+                            
+                    </div>
+
+                        <div class="d-grid gap-2" *ngIf="!load">
+                            <button type="submit"  class="btn text-white fw-bold" style="background-color:#9C47D1" [disabled]="loginForm.invalid" (click)="onSubmit()">Sign
+                                in</button>
+                           
+                                <app-loader *ngIf="load"></app-loader>
+
+                        </div>
+                  
+                    </form> 
+                </div>
+            </div>
+
+        </div>
+    </div> 
+</section>
+ 

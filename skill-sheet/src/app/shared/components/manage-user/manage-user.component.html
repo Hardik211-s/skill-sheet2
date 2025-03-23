@@ -1,0 +1,148 @@
+<div class="d-flex  justify-content-between align-content-center  m-auto  px-5   mt-4 ">
+  <h2 class="m-3  text-center fw-bold " style="color:black">User Management</h2>
+
+</div>
+<div class="container ">
+  <hr />
+</div>
+<div class=" m-3 p-4">
+
+  <!-- Search Bar -->
+  <div class="mb-3">
+    <input type="text" class="form-control" placeholder="Search user..." [(ngModel)]="searchText">
+  </div>
+
+  <!-- User Table -->
+  <div class="table-responsive w-100 overflow-x-hidden">
+    <table class="table table-striped table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th (click)="sortOnUsername()">
+            Name <i class="fa-solid fa-sort " style="color: #ffffff;cursor: pointer;"></i>
+          </th>
+          <th (click)="sortOnEmail()">Email <i class="fa-solid fa-sort " style="color: #ffffff;cursor: pointer;"></i>
+          </th>
+          <th (click)="sortOnRole()">Role <i class="fa-solid fa-sort " style="color: #ffffff;cursor: pointer;"></i></th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers;  let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td class="text-center">
+
+            <button type="button" class="btn btn-sm  " data-bs-toggle="modal" data-bs-target="#editModal"
+              (click)="getSeletedUser(user)">
+              <i class="fa-solid fa-pen-to-square fs-5" style="color: #0151da;"></i>
+            </button>
+            <button type="button" class="btn btn-sm me-2" data-bs-toggle="modal" data-bs-target="#deleteModal"
+              (click)="getSeletedUser(user)">
+              <i class="fa-solid fa-trash fs-5" style="color: #d30000;"></i>
+
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!--Edit Modal -->
+<div class="modal fade align-content-center" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="text-center fw-bold " style="color:black">Edit User</h2>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editUserForm">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Username</label>
+            <input type="text"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              formControlName='username' placeholder="Enter username" readonly />
+            <div class="text-danger"
+              *ngIf="editUserForm.get('username')?.invalid && editUserForm.get('username')?.touched ">
+              Username is required
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Username</label>
+            <input type="text"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              formControlName='email' placeholder="Enter email" />
+            <div class="text-danger" *ngIf="editUserForm.get('email')?.errors?.['required'] && editUserForm.get('email')?.touched ">
+              Email is required
+            </div>
+            <div class="text-danger"
+                            *ngIf="editUserForm.get('email')?.errors?.['email'] && editUserForm.get('email')?.touched ">
+                            Enter correct form of email
+                        </div>
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Password</label>
+            <input type="password"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              placeholder="Enter new password" formControlName='password' />
+            <div class="text-danger"
+              *ngIf="editUserForm.get('password')?.errors?.['required'] && editUserForm.get('password')?.touched ">
+              password is required
+            </div>
+            <div class="text-danger"
+              *ngIf="editUserForm.get('password')?.hasError('pattern') && editUserForm.get('password')?.touched">
+              Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a
+              number
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" *ngIf="!load" class="btn btn-success text-white fw-bold" [disabled]="editUserForm.invalid"
+          (click)="editUser(closeModal)">Update user</button>
+        <app-loader *ngIf="load"></app-loader>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade align-content-center" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="text-center fw-bold" style="color:black">Remove User</h2>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <strong class="text-danger">Are you sure to remove user : ABC</strong>
+
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Username</label>
+            <input type="text"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              value={{selectedUser.username}} readonly placeholder="Enter username" />
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" #closeModal2>Close</button>
+        <button type="submit" class="btn btn-danger text-white fw-bold" (click)="deleteUser(closeModal2)">Remove
+          user</button>
+
+      </div>
+    </div>
+  </div>
+</div>

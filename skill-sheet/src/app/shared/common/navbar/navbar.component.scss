@@ -1,0 +1,35 @@
+
+#sidebar {
+    position: fixed;
+    width: 260px;
+    height: 100vh;
+    background: #0e2238;
+    transition: width 0.3s ease;
+    overflow-y: auto;
+}
+
+#sidebar .sidebar-link {
+    color: white;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.main {
+    flex-grow: 1;
+    margin-left: 260px; /* Ensures content does not go under the sidebar */
+    padding: 1rem;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #fafbfe;
+    transition: margin-left 0.3s ease;
+}
+
+#sidebar.expand {
+    width: 70px;
+}
+
+#sidebar.expand + .main {
+    margin-left: 70px;
+}

@@ -1,0 +1,21 @@
+export const DEGREES=[ 
+    "AS",
+    "AAS",
+    "BA",
+    "BSc",
+    "BE/BEng",
+    "BBA)",
+    "BCom",
+    "BTech",
+    "MBBS",
+    "MA",
+    "MSc",
+    "MEng",
+    "MBA",
+    "MTech",
+    "MD",
+    "PhD",
+    "DBA",
+    "JD",
+    "EdD"
+  ];

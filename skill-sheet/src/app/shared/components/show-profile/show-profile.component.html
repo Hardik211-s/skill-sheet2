@@ -1,0 +1,258 @@
+<!-- <div class=" position-relative bg-white" id="profileImageContainer">
+  <img id="previewProfileImage"
+      src={{imageURL}} 
+      alt="" class="rounded-circle border border-dark object-fit-cover" width="120px" height="120px">
+</div> <div class="rounded-circle position-relative bg-white" id="cameraImageContainer">
+<img src="assets/camera.png" alt="" class="" height="30px">
+</div> -->
+<section>
+  <div class="container py-3">
+    <div class="row " *ngIf="!userDetail.fullName">
+      <section class="d-flex align-items-center justify-content-center mt-3 pt-5 bg-light text-dark">
+        <div class="container d-flex flex-column align-items-center justify-content-center text-center p-">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-25 h-25 text-secondary mb-4">
+                <path fill="currentColor" d="M256,16C123.452,16,16,123.452,16,256S123.452,496,256,496,496,388.548,496,256,388.548,16,256,16ZM403.078,403.078a207.253,207.253,0,1,1,44.589-66.125A207.332,207.332,0,0,1,403.078,403.078Z"></path>
+                <rect width="176" height="32" x="168" y="320" fill="currentColor"></rect>
+                <polygon fill="currentColor" points="210.63 228.042 186.588 206.671 207.958 182.63 184.042 161.37 162.671 185.412 138.63 164.042 117.37 187.958 141.412 209.329 120.042 233.37 143.958 254.63 165.329 230.588 189.37 251.958 210.63 228.042"></polygon>
+                <polygon fill="currentColor" points="383.958 182.63 360.042 161.37 338.671 185.412 314.63 164.042 293.37 187.958 317.412 209.329 296.042 233.37 319.958 254.63 341.329 230.588 365.37 251.958 386.63 228.042 362.588 206.671 383.958 182.63"></polygon>
+            </svg>
+            <p class="fs-3 fw-bold">Please add user detail</p>
+            <a routerLink="/personal" class="btn btn-primary fw-bold px-4 py-2 mt-3">Add Profile Detail</a>
+        </div>
+    </section>
+      </div>
+
+    
+    <div class="row " *ngIf="userDetail.fullName">
+      <div class=" " [ngClass]="(userId!=0)?'col-12':'col-lg-4'">
+        <div class="card mb-4 shadow border-0">
+          <div class="card-body text-center">
+            
+            <img src={{imageURL}} alt="avatar" class="rounded-circle    img-fluid " style="width: 150px; height: 150px; ">
+            <h5 class="my-3">{{userDetail.fullName}} </h5>
+            <p class="text-muted mb-1 fw-semibold">{{userDetail.description}}</p>
+            <!-- <p class="text-muted mb-4 fw-semibold">{{userDetail.country}}</p> -->
+            <div class="d-flex justify-content-center mb-2">
+
+              <!-- <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button> -->
+              <button type="button" *ngIf="userId==0" class="btn btn-primary border-0 btn-sm fw-semibold" style="background-color:#9C47D1">
+                <!-- data-bs-toggle="modal" data-bs-target="#editModal"> -->
+                <a routerLink="/edit" class="text-decoration-none text-white">Edit Profile</a> 
+              </button>
+              <button type="mx-2 button"  *ngIf="userId==0" class="ms-2 btn btn-primary btn-sm border-0 fw-semibold" style="background-color:#9C47D1"  data-bs-toggle="modal" data-bs-target="#editModal"
+              >Change Password  </button> 
+
+            </div>
+          </div>
+        </div>
+        <div class="card shadow border-0 mb-4 mb-lg-0">
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded-3">
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <p class="mb-0 fw-semibold">Joining date</p>
+
+                <p class="mb-0">{{userDetail.joiningDate}}</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <p class="mb-0 fw-semibold">Age</p>
+
+                <p class="mb-0">{{userDetail.age}} Years</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <p class="mb-0 fw-semibold">Qualification</p>
+
+                <p class="mb-0">{{userDetail.qualification}}</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <p class="mb-0 fw-semibold">Work in japan</p>
+
+                <p class="mb-0">{{userDetail.workJapan ? "Yes": "No"}}</p>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <p class="mb-0 fw-semibold">Country</p>
+
+                <p class="mb-0">{{userDetail.country}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class=""  [ngClass]="(userId!=0)?'col-12 mt-4':'col-lg-8 '">
+        <div class="card mb-4 shadow border-0">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0 fw-semibold">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{userDetail.fullName}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0 fw-semibold">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{user.Email}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0  fw-semibold">Phone</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{userDetail.phoneNo}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0  fw-semibold">Gender</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{userDetail.sex}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0  fw-semibold">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class=""  [ngClass]="(userId!=0)?'col-12 mt-4':'col-md-6 overflow-y-auto'">
+            <div class="card mb-4 mb-md-0 shadow border-0 overflow-hidden ">
+              <p class="mb-4  fw-bold px-3 mt-3">Programming Language
+              </p>
+              <div class="card-body"style="overflow-y: auto;height: 300px;scrollbar-width:none;">
+                 
+                <div *ngFor="let user of filterCategory('Programming & Development');  let i = index">
+
+                  <p class="  fw-semibold" style="font-size: .77rem;">{{user.skill}}</p>
+                  <!-- <div class="progress rounded" style="height: 5px;"> -->
+                    <div class="progress rounded mb-3" style="height: 6px;color:palegoldenrod">
+                      <div class="progress-bar"
+                           role="progressbar"
+                           [style.width.%]="getProficiencyPercentage(user.proficiencyLevel)" 
+                           [attr.aria-valuenow]="getProficiencyPercentage(user.proficiencyLevel)"
+                           aria-valuemin="0" 
+                           aria-valuemax="100"
+                           style="color: #9C47D1; background-color: #ac71d1;">
+                        <!-- {{ getProficiencyPercentage(user.proficiencyLevel) }}%  -->
+                      </div>
+                    </div>
+                  </div>
+                <!-- </div> -->
+                
+             
+              </div>
+            </div>
+          </div>
+          <div class="  "  [ngClass]="(userId!=0)?'col-12 mt-4':'col-md-6 overflow-y-auto mb-4'" >
+            <div class="card mb-4 mb-md-0 shadow border-0 overflow-hidden ">
+            <p class="mb-4  fw-bold px-3 mt-3">Core Skills
+            </p>
+              <div class="card-body "style="overflow-y: auto;height: 400px;scrollbar-width:none;">
+                <div *ngFor="let user of filterByExcludeSkill();  let i = index">
+
+                  <p class="   fw-semibold" style="font-size: .77rem;">{{user.skill}}</p>
+                  <!-- <div class="progress rounded" style="height: 5px;"> -->
+                    <div class="progress rounded mb-3" style="height: 6px;color:palegoldenrod">
+                      <div class="progress-bar"
+                           role="progressbar"
+                           [style.width.%]="getProficiencyPercentage(user.proficiencyLevel)" 
+                           [attr.aria-valuenow]="getProficiencyPercentage(user.proficiencyLevel)"
+                           aria-valuemin="0" 
+                           aria-valuemax="100"
+                           style="color: #9C47D1; background-color: #ac71d1;">
+                        <!-- {{ getProficiencyPercentage(user.proficiencyLevel) }}%  -->
+                      </div>
+                    </div>
+                  </div>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade align-content-center" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="text-center fw-bold " style="color:black">Edit User</h2>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"  ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editUserForm">
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Password</label>
+            <input type="password"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              formControlName='password'  placeholder="Enter password" />
+            <div class="text-danger"
+              *ngIf="editUserForm.get('password')?.errors?.['required'] && editUserForm.get('password')?.touched ">
+              Username is required
+            </div>
+            <div class="text-danger" *ngIf="editUserForm.get('password')?.hasError('pattern') && editUserForm.get('password')?.touched">
+              Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                </div>
+            
+                                <!-- <div class="text-danger" *ngIf="!editUserForm.get('password')?.value?.match('/^(?=[^A-Z]*[A-Z])(?=[^a-z]*[a-z])(?=\D*\d).{8,}$/') && editUserForm.get('password')?.touched">
+                                  Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                                    </div> -->
+ 
+          </div>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Confirm Password</label>
+            <input type="password"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              formControlName='confirmPassword'   placeholder="Enter email" />
+            <div class="text-danger"
+              *ngIf="editUserForm.get('confirmPassword')?.errors?.['required'] && editUserForm.get('confirmPassword')?.touched ">
+              Email is required
+            </div>
+            <div class="text-danger" *ngIf="editUserForm.get('confirmPassword')?.hasError('pattern') && editUserForm.get('confirmPassword')?.touched">
+              Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                </div>
+                                 <div *ngIf="editUserForm.get('confirmPassword')?.hasError('mustMatch') && editUserForm.get('confirmPassword')?.touched">
+                                  <span class="text-danger">Passwords do not match!</span>
+                                </div>
+         
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">New Password</label>
+            <input type="password"
+              class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+              placeholder="Enter new password" formControlName='newPassword' />
+            <div class="text-danger"
+              *ngIf="editUserForm.get('newPassword')?.errors?.['required'] && editUserForm.get('newPassword')?.touched ">
+              password is required
+            </div>
+            <div class="text-danger" *ngIf="editUserForm.get('newPassword')?.hasError('pattern') && editUserForm.get('newPassword')?.touched">
+              Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                </div> 
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary " data-bs-dismiss="modal" #closeModal>Close</button>
+        <button type="submit" class="btn btn-success text-white fw-bold" [disabled]="editUserForm.invalid"
+          (click)="changePassword(closeModal)">Change Password</button>
+
+      </div>
+    </div>
+  </div>
+</div>

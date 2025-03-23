@@ -1,0 +1,10 @@
+ .nav-item .nav-link {
+    transition: 0.3s;
+}
+
+.nav-item .nav-link:hover {
+    background-color: #e7bdf3;
+    color: white !important;
+    border-radius: 5px;
+    font-weight: bolder;
+}

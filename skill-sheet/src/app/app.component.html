@@ -1,0 +1,10 @@
+ 
+<app-navbar></app-navbar>
+<div *ngIf="isLoggedIn" class="">
+  {{isLoggedIn}}
+    <app-main></app-main>
+  </div>
+
+<div *ngIf="!isLoggedIn"><router-outlet></router-outlet></div>
+ 
+

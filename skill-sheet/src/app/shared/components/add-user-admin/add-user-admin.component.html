@@ -1,0 +1,66 @@
+<div class="container mt-4 w-75">
+    <h2 class="m-3  fw-bold " style="color:black">Add New User </h2>
+    <hr />
+</div>
+<div class=" mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card border-0">
+
+                <div class="card-body shadow p-3">
+                    <form [formGroup]="addUserForm">
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label  mb-1 fw-semibold">User Name</label>
+                            <input type="text"
+                                class="w-100 text-start  form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                formControlName='username' placeholder="Enter username" />
+                            <div class="text-danger"
+                                *ngIf="isFieldTouched('username')  && addUserForm.get('username')?.invalid ">
+                                Username is required
+                            </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label  mb-1 fw-semibold">Email Address</label>
+                            <input type="text"
+                                class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                formControlName='email' placeholder="Enter Email" />
+                            <div class="text-danger"
+                                *ngIf="isFieldTouched('email')  && addUserForm.get('email')?.errors?.['required'] ">
+                                Email is required
+                            </div>
+                            <div class="text-danger"
+                            *ngIf="isFieldTouched('email')  && addUserForm.get('email')?.errors?.['email'] ">
+                            Enter correct form of email
+                        </div>
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label  mb-1 fw-semibold">Password</label>
+                            <input typ="password"
+                                class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                formControlName='password' placeholder="Enter password" />
+                            <div class="text-danger"
+                                *ngIf="isFieldTouched('password')  && addUserForm.get('password')?.errors?.['required'] ">
+                                Password is required
+                            </div>
+                            <div class="text-danger" *ngIf="addUserForm.get('password')?.hasError('pattern') && addUserForm.get('password')?.touched">
+                                Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
+                                                  </div>
+
+                        </div>
+
+
+                        <div class="d-grid">
+                            <button type="submit" *ngIf="!load" class="btn text-white fw-bold"
+                                style="background-color:#CC5DE8" [disabled]="addUserForm.invalid"
+                                (click)="onSubmit()">Add User</button>
+                            <app-loader *ngIf="load"></app-loader>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
