@@ -4,12 +4,15 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UserdetailService } from '../../../service/userdetail.service';
 import { AuthService } from '../../../service/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { catchError, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoaderComponent } from '../../common/loader/loader.component';
+import { Proficieny } from '../../../enums/proficieny';
+import { producerNotifyConsumers } from '@angular/core/primitives/signals';
 @Component({
   selector: 'app-show-profile',
-  imports: [RouterLink, CommonModule, ReactiveFormsModule],
+  imports: [RouterLink, CommonModule,FormsModule, ReactiveFormsModule,LoaderComponent],
   templateUrl: './show-profile.component.html',
   styleUrl: './show-profile.component.scss'
 })
@@ -24,9 +27,14 @@ export class ShowProfileComponent implements OnInit, OnChanges {
   userSkill: any = {}
   programming: any = {}
   userRequestData: any = {}
+  load:boolean=false;
 
   private _snackBar = inject(MatSnackBar);
 
+  constructor(private http: HttpClient, private router: Router, private authSearvice: AuthService, private userDetailService: UserdetailService, private cdr: ChangeDetectorRef) {
+  }
+
+ 
   editUserForm = new FormGroup({
     password: new FormControl('', [Validators.required, Validators.pattern(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
@@ -34,13 +42,19 @@ export class ShowProfileComponent implements OnInit, OnChanges {
     ),
     confirmPassword: new FormControl('', [Validators.required, Validators.pattern(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
-    )]),
-    newPassword: new FormControl('', [Validators.required, Validators.pattern(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$'
-    )])
+    ),
+    this.matchValues('newPassword')]),
+    newPassword: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
+    ])
   })
-
-  constructor(private http: HttpClient, private router: Router, private authSearvice: AuthService, private userDetailService: UserdetailService, private cdr: ChangeDetectorRef) {
+  matchValues(matchTo: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return control?.value === control?.parent?.get(matchTo)?.value
+        ? null
+        : { mismatch: true };
+    };
   }
 
 
@@ -58,14 +72,19 @@ export class ShowProfileComponent implements OnInit, OnChanges {
 
 
   loadData() {
-    this.http.get(`${"https://localhost:7111/api/UserDetail/UserDetailById"}/${(this.userId == 0) ? this.user.UserId : this.userId}`).subscribe((res) => {
+    this.userDetailService.userDetailById((this.userId == 0) ? this.user.UserId : this.userId).subscribe((res) => {
       this.userDetail = res;
       this.userDetail = this.userDetail?.userDetail;
       this.imageURL = "https://localhost:7111/" + this.userDetail.photo;
       this.userDetailService.addData(this.userDetail);
     })
 
-    this.http.get(`${"https://localhost:7111/api/UserSkill"}/${(this.userId == 0) ? this.user.UserId : this.userId}`).subscribe((res) => {
+    this.http.get(`${"https://localhost:7111/api/UserSkill"}/${(this.userId == 0) ? this.user.UserId : this.userId}`).pipe(
+      catchError((error) => {
+
+        return throwError(() => error); // Proper error handling
+      })
+    ).subscribe((res) => {
       this.userSkill = res
       this.cdr.detectChanges();
     })
@@ -73,10 +92,10 @@ export class ShowProfileComponent implements OnInit, OnChanges {
 
   getProficiencyPercentage(level: string): number {
     switch (level) {
-      case 'Beginner': return 25;
-      case 'Intermediate': return 50;
-      case 'Advanced': return 75;
-      case 'Expert': return 100;
+      case Proficieny.Beginner: return 25;
+      case Proficieny.Intermediate: return 50;
+      case Proficieny.Advanced: return 75;
+      case Proficieny.Expert: return 100;
       default: return 0;
     }
   }
@@ -96,15 +115,8 @@ export class ShowProfileComponent implements OnInit, OnChanges {
     );
   }
   changePassword(closeModal: HTMLButtonElement) {
-    const password = this.editUserForm.get('password')?.value;
-    const confirmPassword = this.editUserForm.get('confirmPassword')?.value;
-
-    if (password && confirmPassword && password !== confirmPassword) {
-      this.editUserForm.get('confirmPassword')?.setErrors({ mustMatch: true });
-      return;
-    } else {
-      this.editUserForm.get('confirmPassword')?.setErrors(null);
-    }
+    this.load=true;
+   
     this.userRequestData = {
       username: this.user.Name,
       email: this.user.Email,
@@ -118,6 +130,8 @@ export class ShowProfileComponent implements OnInit, OnChanges {
           horizontalPosition: "right",
           verticalPosition: 'bottom',
         });
+        this.load=false;
+
         return throwError(() => error); // Proper error handling
       })
     ).subscribe((res) => {
@@ -129,6 +143,8 @@ export class ShowProfileComponent implements OnInit, OnChanges {
       if (this.closeModal) {
         this.closeModal.nativeElement.click();
       }
+    this.load=false;
+
       closeModal.click();
     })
 

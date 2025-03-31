@@ -5,7 +5,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from '../../../service/auth.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-my-skill',
@@ -15,6 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class MySkillComponent implements OnInit {
   @ViewChild('closeModal') closeModal!: ElementRef;
+  @ViewChild('closeModal1') closeModal1!: ElementRef;
 
   searchText: string = ""
   dummy: any = []
@@ -26,7 +27,7 @@ export class MySkillComponent implements OnInit {
     proficiency: new FormControl('', [Validators.required]),
     experience: new FormControl('', [Validators.required]),
   });
-  constructor(private http: HttpClient, private authSearvice: AuthService) { }
+  constructor(private http: HttpClient, private authSearvice: AuthService,private route:Router) { }
  
 
   ngOnInit(): void {
@@ -79,12 +80,13 @@ export class MySkillComponent implements OnInit {
         verticalPosition: 'bottom',
       });
     })
+      this.ngOnInit()
     if (this.closeModal) {
       this.closeModal.nativeElement.click();
     }
   }
 
-  deleteSkill(closeModal: HTMLButtonElement) {
+  deleteSkill(closeModal1: HTMLButtonElement) {
     this.http.delete(`${"https://localhost:7111/api/UserSkill/" + this.selectedSkill.userSkillId}`).pipe(
       catchError((error) => {
         this._snackBar.open(error.error.message, 'Remove', {
@@ -98,15 +100,17 @@ export class MySkillComponent implements OnInit {
       })
     ).subscribe((res) => {
       // window.location.reload()
-      this._snackBar.open('Skill Edited !', 'Remove', {
+      this._snackBar.open('Skill Delete !', 'Remove', {
         horizontalPosition: "right",
         verticalPosition: 'bottom',
       });
+      this.ngOnInit()
+this.route.navigate(['/my-skill'])
 
-      if (this.closeModal) {
-        this.closeModal.nativeElement.click();
-      }
     })
+      if (this.closeModal1) {
+        this.closeModal1.nativeElement.click();
+      }
   }
 
 }

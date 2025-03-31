@@ -31,8 +31,7 @@ export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
     role: new FormControl('', [Validators.required]),
     username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required, Validators.minLength(3),
-      Validators.pattern( '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$')
+    password: new FormControl('', [Validators.required, Validators.minLength(3)
     ])
   });
 
@@ -46,6 +45,8 @@ export class LoginComponent implements OnInit {
     this.authService.getAllUser().subscribe((res) => {
       this.alluser = res;
       this.alluser = (this.alluser.allUsers);
+      console.log(res)
+      console.log(this.alluser)
       this.alluser.forEach((element: { role: any; }) => {
       });
     })

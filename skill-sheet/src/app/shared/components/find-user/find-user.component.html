@@ -11,16 +11,16 @@
     <mat-form-field class="me-3">
       <mat-label>Select an option</mat-label>
       <mat-select formControlName="category">
-        <mat-option *ngFor="let category of skillCategory" [value]="category.categoryId" (click)="OnCategory()"><i
-            class="{{category.iconName}}"> </i> {{ category.categoryName }}</mat-option>
+        <mat-option *ngFor="let category of skillCategory" [value]="category.skillCategoryId" (click)="OnCategory()"><i
+            class="{{category.iconName}}"> </i> {{ category.skillCategoryName }}</mat-option>
         <mat-option value="option3">Option 3</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="me-3">
       <mat-label>Select an option</mat-label>
       <mat-select formControlName="subCategory">
-        <mat-option *ngFor="let category of skillSubCategory" [value]="category.subcategoryId"
-          (click)="OnSubcategory()"><i class="{{category.iconName}}"> </i> {{ category.subcategoryName }}</mat-option>
+        <mat-option *ngFor="let category of skillSubCategory" [value]="category.skillSubcategoryId"
+          (click)="OnSubcategory()"><i class="{{category.iconName}}"> </i> {{ category.skillSubcategoryName }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field class="me-3">
@@ -34,8 +34,8 @@
       </mat-select>
     </mat-form-field>
 
-    <button type="submit" class="btn btn-primary  align-item-center rounded-circle text-center m-auto"
-      (click)="searchUsers()" [disabled]="skillForm.invalid"><i class="fa fa-search text-center"> </i></button>
+    <button type="submit" class="btn btn-primary  align-item-center border-0  rounded-circle text-center m-auto"
+      (click)="searchUsers()" [disabled]="skillForm.invalid" style="background-color:#CC5DE8"><i class="fa fa-search text-center" > </i></button>
   </form>
 </div>
 
@@ -60,7 +60,8 @@
 
 </div>
 <div class="table-responsive mx-3 mt-4 px-5">
-  <table class="table align-items-center ">
+  
+  <table class="table align-items-center  " id="hardik">
     <tbody>
 
       <tr *ngFor="let user of filteredUser;  let i = index">
@@ -101,11 +102,16 @@
         </td>
       </tr>
 
+
     </tbody>
   </table>
+  <hr class=""  *ngIf="filteredUser.length>0"/>
+  <button type="submit" class="btn float-end mx-3 text-white fw-bold" *ngIf="filteredUser.length>0"
+    style="background-color:#CC5DE8" (click)="generatePdf()" >Get Pdf</button>
+    
 </div>
 <div class="modal fade align-content-center" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+  >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -123,3 +129,49 @@
     </div>
   </div>
 </div>
+
+  <!-- <div class="table-responsive mx-3 mt-5 px-5 " >
+    <table class="table align-items-center mt-5">
+      <tbody>
+  
+        <tr *ngFor="let user of filteredUser;  let i = index">
+          <td class="w-30">
+            <div class="d-flex px-2 py-1 align-items-center">
+              <div>
+                <img [src]="'https://localhost:7111/' + user.photo" width="40" height="40" class="rounded-circle"
+                  alt="Country flag">
+  
+              </div>
+              <div class="ms-4">
+                <p class="text-sm font-weight-bold mb-0">{{user.fullName}}</p>
+                <h6 class="text-sm mb-0">{{user.country}}</h6>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="text-center">
+              <p class="text-xs font-weight-bold mb-0">Mobile</p>
+              <h6 class="text-sm mb-0">{{user.phoneNo}}</h6>
+            </div>
+          </td>
+          <td>
+            <div class="text-center">
+              <p class="text-xs font-weight-bold mb-0">Work Japan:</p>
+              <h6 class="text-sm mb-0">{{user.workJapan}}</h6>
+            </div>
+          </td>
+  
+          <td class="align-middle text-sm">
+            <div class="col text-center">
+              <p class="text-xs font-weight-bold mb-0">Joining:</p>
+              <h6 class="text-sm mb-0">{{user.joiningDate}}</h6>
+            </div>
+          </td>
+          <td class="align-middle text-sm">
+  
+          </td>
+        </tr>
+  
+      </tbody>
+    </table>
+  </div> -->

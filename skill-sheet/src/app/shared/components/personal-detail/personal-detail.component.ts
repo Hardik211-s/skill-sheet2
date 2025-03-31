@@ -36,6 +36,7 @@ export class PersonalDetailComponent implements OnInit {
   ageDate: string = new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate())
     .toISOString()
     .split('T')[0];
+  joinDate: string = new Date().toISOString().split('T')[0];
   dob = new FormControl('');
   private _snackBar = inject(MatSnackBar);
 
@@ -47,7 +48,7 @@ export class PersonalDetailComponent implements OnInit {
     birthdate: new FormControl('', [Validators.required]),
     joiningDate: new FormControl('', [Validators.required]),
     workJapan: new FormControl('', [Validators.required]),
-    phoneNo: new FormControl('', [Validators.required]),
+    phoneNo: new FormControl('', [Validators.required, Validators.minLength(10)]),
     photo: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     qualification: new FormControl('', [Validators.required])
@@ -70,16 +71,23 @@ export class PersonalDetailComponent implements OnInit {
       })
     ).subscribe((res) => {
       this.profileData = res
+      console.log(this.profileData)
       this.profileData = this.profileData.userDetail
       this.userDetailService.addData(this.profileData)
       this.isEditImage = this.userDetailService.isUserPresent()
+      console.log(this.profileData.photo)
+      if(this.profileData.photo == null && this.profileData.fullName==null  && this.profileData.phoneNo==0 && this.profileData.description==null && this.profileData.qualification==null){
+        this.isEditImage = false
+        console.log("pppp")
+        }
+
 
       if (this.isEditImage) {
-        this.profileData.photo = "https://localhost:7111/" + this.profileData.photo
+        this.profileData.photo = "https://localhost:7111/" + this.profileData?.photo
         this.detailForm.get('photo')?.clearValidators();
         this.detailForm.get('photo')?.updateValueAndValidity();
         this.detailForm.get('username')?.setValue(this.profileData.username)
-        this.detailForm.get('lastname')?.setValue(this.profileData.fullName.split(" ")[1])
+        this.detailForm.get('lastname')?.setValue(this.profileData.fullName?.split(" ")[1])
         this.detailForm.get('gender')?.setValue(this.profileData.sex)
         this.detailForm.get('country')?.setValue(this.profileData.country)
         this.detailForm.get('birthdate')?.setValue(this.profileData.birthdate)
@@ -148,7 +156,6 @@ export class PersonalDetailComponent implements OnInit {
     formData.append('country', this.profileData.country ?? '');
     formData.append('description', this.profileData.description);
 
-    if (this.isEditImage) {
       if (this.selectedFile) {
         formData.append('photo', this.selectedFile, this.selectedFile?.name);
       }
@@ -166,29 +173,10 @@ export class PersonalDetailComponent implements OnInit {
           horizontalPosition: "right",
           verticalPosition: 'bottom',
         });
-      })
-    } else {
-
-      if (this.selectedFile) {
-        formData.append('photo', this.selectedFile, this.selectedFile?.name);
-      }
-      this.http.post("https://localhost:7111/api/UserDetail/AddUserDetail", formData).pipe(
-        catchError((error) => {
-          this._snackBar.open('Profile not added !!', 'Remove', {
-            horizontalPosition: "right",
-            verticalPosition: 'bottom',
-          });
-          return throwError(() => error); // Proper error handling
-        })
-      ).subscribe((res) => {
-        this.addedProfileDetail = res;
-        this._snackBar.open('Profile detail added successfully !!', 'Remove', {
-          horizontalPosition: "right",
-          verticalPosition: 'bottom',
-        });
         this.router.navigate(['/showdetail'])
+
       })
-    }
+    
   }
 
 }

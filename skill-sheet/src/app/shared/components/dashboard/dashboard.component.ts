@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit  {
   //Filter gender
   filterGender(search:string){
     return this.allData?.allUserDetail?.filter((user: { sex: string}) =>
-      user.sex.includes(search)
+      user.sex?.includes(search)
     );
   }
 

@@ -14,9 +14,9 @@
                                     <mat-label>Select</mat-label>
                                     <mat-select formControlName="firstCtrl" panelClass="example-panel-Red">
                                         @for (category of skillCategory; track category) {
-                                        <mat-option [value]="category.categoryId" (click)="OnCategory()"><i
+                                        <mat-option [value]="category.skillCategoryId" (click)="OnCategory()"><i
                                                 class="{{category.iconName}}"></i>
-                                            {{category.categoryName}}</mat-option>
+                                            {{category.skillCategoryName}}</mat-option>
                                         }
 
                                     </mat-select>
@@ -36,9 +36,9 @@
                                     <mat-select formControlName="secondCtrl" panelClass="example-panel-Red">
 
                                         @for (subCategory of skillSubCategory; track subCategory) {
-                                        <mat-option [value]="subCategory.subcategoryId" (click)="OnSubcategory()"><i
+                                        <mat-option [value]="subCategory.skillSubcategoryId" (click)="OnSubcategory()"><i
                                                 class="{{subCategory.iconName}}"> </i>
-                                            {{subCategory.subcategoryName}}</mat-option>
+                                            {{subCategory.skillSubcategoryName}}</mat-option>
                                         }
                                     </mat-select>
                                 </mat-form-field>

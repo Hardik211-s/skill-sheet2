@@ -34,6 +34,24 @@
                             *ngIf="isFieldTouched('email')  && addUserForm.get('email')?.errors?.['email'] ">
                             Enter correct form of email
                         </div>
+                        <div class="mb-3 mt-3">
+                            <!-- <div class="dropdown"> -->
+                                <label for="role" class="form-label   mb-1 fw-semibold" >User role </label>
+                                <br />
+                               
+                                <select
+                                    class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
+                                  formControlName='role'>
+                                    <option value="">Select role </option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="User">User</option>
+
+                                </select>
+                                <div class="text-danger" *ngIf="isFieldTouched('role')  && addUserForm.get('role')?.invalid ">
+                                    Role is required
+                                </div>
+                            <!-- </div> -->
+                        </div>
 
                         </div>
                         <div class="mb-3">

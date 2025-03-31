@@ -75,10 +75,10 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="recipient-name" class="col-form-label">Username</label>
+            <label for="recipient-name" class="col-form-label">Email</label>
             <input type="text"
               class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
-              formControlName='email' placeholder="Enter email" />
+              formControlName='email' placeholder="Enter email" readonly />
             <div class="text-danger" *ngIf="editUserForm.get('email')?.errors?.['required'] && editUserForm.get('email')?.touched ">
               Email is required
             </div>

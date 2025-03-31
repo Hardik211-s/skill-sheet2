@@ -26,7 +26,7 @@ export class AddUserAdminComponent {
   }
 
   addUserForm = new FormGroup({
-    role: new FormControl('User', [Validators.required]),
+    role: new FormControl('', [Validators.required]),
     username: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required,Validators.email]),
     password: new FormControl('', [Validators.required,Validators.pattern(

@@ -60,4 +60,8 @@ export class UserdetailService {
     return this.userDetailSubject.getValue();
   }
 
+
+  userDetailById(id:number){
+    return this.http.get(environment.apiUrl + "UserDetail/UserDetailById/"+id);
+  }
 }

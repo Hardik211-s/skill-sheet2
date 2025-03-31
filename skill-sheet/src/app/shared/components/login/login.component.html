@@ -71,9 +71,6 @@
                             <div class="text-danger" *ngIf="isFieldTouched('password') && loginForm.get('password')?.errors?.['required'] ">
                                 Password is required
                             </div>
-                            <div class="text-danger" *ngIf="loginForm.get('password')?.hasError('pattern') && loginForm.get('password')?.touched">
-                                Your password must be at least 8 characters including a lowercase letter, an uppercase letter, and a number
-                                                  </div>
                             
                     </div>
 

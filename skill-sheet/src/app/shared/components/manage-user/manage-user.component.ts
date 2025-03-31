@@ -10,7 +10,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LoaderComponent } from '../../common/loader/loader.component';
-// import * as bootstrap from 'bootstrap';
+import { AuthService } from '../../../service/auth.service';
+
+
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export interface PeriodicElement {
   name: string;
@@ -40,6 +43,9 @@ export class ManageUserComponent {
   @ViewChild('closeModal') closeModal!: ElementRef;
   @ViewChild('closeModal2') closeModal2!: ElementRef;
 
+  constructor(private http: HttpClient, private router: Router,private authService :AuthService) {
+  }
+
   searchText: string = '';
   user: any[] = [];
   userRequestData: any = {}
@@ -57,23 +63,60 @@ export class ManageUserComponent {
     email: new FormControl('', [Validators.required,Validators.email]),
     username: new FormControl('', [Validators.required])
   });
-
-  constructor(private http: HttpClient, private router: Router) { }
+ 
 
   ngOnInit() {
-    this.http.get("https://localhost:7111/api/Auth/allUser").subscribe((res) => {
+    this.authService.getAllUser().subscribe((res) => {
       this.allUsers = res;
       this.user = this.allUsers.allUsers;
     })
   }
 
+   docDefinition = {
+    content: [
+      { text: "Tables", style: "header" },
+      "Official documentation is in progress, this document is just a glimpse of what is possible with pdfmake and its layout engine.",
+      {
+        text:
+          "A simple table (no headers, no width specified, no spans, no styling)",
+        style: "subheader"
+      },
+      "The following table has nothing more than a body array",
+      {
+        style: "tableExample",
+        table: {
+          body: [
+            ["Column 1", "Column 2", "Column 3"],
+            ["One value goes here", "Another one here", "OK?"]
+          ]
+        }
+      }
+    ],
 
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 10] // Ensure exactly four elements
+      },
+      subheader: {
+        fontSize: 16,
+        bold: true,
+        margin: [0, 10, 0, 5] // Ensure exactly four elements
+      },
+      tableExample: {
+        margin: [0, 5, 0, 15] // Ensure exactly four elements
+      }
+    }
+  };
+
+ 
   get filteredUsers() {
     return this.user.filter((user: { username: any; role: any; email: any }) =>
       user.username.toLowerCase().includes(this.searchText.toLowerCase()) ||
       user.email.toLowerCase().includes(this.searchText.toLowerCase()) ||
       user.role.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+    ).filter((user: { username: any; role: any; email: any }) => user.role != "Admin");
   }
 
   sortOnUsername() {
@@ -118,7 +161,7 @@ export class ManageUserComponent {
         horizontalPosition: "right",
         verticalPosition: 'bottom',
       });
-
+      this.ngOnInit()
       if (this.closeModal) {
         this.closeModal.nativeElement.click();
       }
@@ -146,6 +189,7 @@ export class ManageUserComponent {
         horizontalPosition: "right",
         verticalPosition: 'bottom',
       });
+      this.ngOnInit();
       if (this.closeModal2) {
         this.closeModal2.nativeElement.click();
       }

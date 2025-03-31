@@ -140,10 +140,11 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="">
+                                        {{detailForm.get('birthdate')?.errors?.['required']}}
                                         <label class="label mb-1 fw-semibold">Joining date</label>
-                                        <input type="date"
+                                        <input type="date" 
                                             class="w-100 text-start form-control border-opacity-25 border-black text-opacity-50 text-black"
-                                            placeholder="Select joining date" [max]="maxDate"[min]="minDate" formControlName="joiningDate" />
+                                            placeholder="Select joining date" [max]="maxDate" [min]="minDate" formControlName="joiningDate" [disabled]="detailForm.get('birthdate')?.errors?.['required']"/>
                                         <div class="text-danger"
                                             *ngIf="isFieldTouched('joiningDate')  && detailForm.get('joiningDate')?.invalid ">
                                             Joining date is required
@@ -178,9 +179,14 @@
                                             pattern="[0-9]{10}" required>
                                     </div>
                                     <div class="text-danger"
-                                        *ngIf="isFieldTouched('phoneNo')  && detailForm.get('phoneNo')?.invalid ">
+                                        *ngIf="isFieldTouched('phoneNo')  && detailForm.get('phoneNo')?.errors?.['required']">
                                         Enter mobile number
                                     </div>
+                                    <div class="text-danger"
+                                        *ngIf="isFieldTouched('phoneNo')  && detailForm.get('phoneNo')?.errors?.['pattern']">
+                                        Enter 10 digit mobile number
+                                    </div>
+                                    
                                 </div>
                             </div>
 
